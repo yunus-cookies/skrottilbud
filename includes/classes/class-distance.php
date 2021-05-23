@@ -28,7 +28,7 @@ if ( ! class_exists( 'Skrottilbud_Distance' ) ) :
                 $formatted_destination = get_post_meta($product_id, '_' . 'post_address', true) . " " . "Danmark";
                 $destination = str_replace(' ', '+', $formatted_destination);
             
-                $api = file_get_contents("https://maps.googleapis.com/maps/api/distancematrix/json?mode=driving&units=metric&origins=".$origin."&destinations=".$destination."&key=AIzaSyBjRXzmjJUZpELeXjmkU7q2F1EeHcvU-wc");
+                $api = file_get_contents("https://maps.googleapis.com/maps/api/distancematrix/json?mode=driving&units=metric&origins=".$origin."&destinations=".$destination."&key=".API_KEY."");
                 $data = json_decode($api);
             
                 if ($data->status == 'INVALID_REQUEST') {
