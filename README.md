@@ -1,1 +1,1 @@
-# skrottilbud
+# Wordpress plugin for skrottilbud
