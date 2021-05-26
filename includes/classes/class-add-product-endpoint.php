@@ -31,8 +31,6 @@ if (! class_exists('Add_Product_Endpoint')) :
             $whitelist_roles = array('administrator');
             $user = wp_get_current_user();
             $user_role = (array) $user->roles;
-            
-            // WP_Rewrite is my Achilles' heel, so please do not ask me for detailed explanation
         
             if (in_array($user_role[0], $whitelist_roles)) {
                 add_rewrite_endpoint( 'add-products', EP_ROOT | EP_PAGES );
