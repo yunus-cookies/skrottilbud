@@ -10,6 +10,7 @@ if (! class_exists('Product_Transition')):
             add_action( 'transition_post_status', array($this, 'add_this_to_new_products'), 10, 3 );
         }
 
+        // Send email on product transition from draft to publish
         function add_this_to_new_products( $new_status, $old_status, $post ) {
 
             global $post;

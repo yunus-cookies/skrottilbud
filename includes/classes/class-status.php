@@ -12,6 +12,7 @@ if (! class_exists('Product_Status')) :
             add_action( 'manage_posts_custom_column', array($this, 'populate_status'));
         }
 
+        // Status bar above each product
         function grid_offer_check() {
             $product_id = get_the_ID();
             $current_user = wp_get_current_user();
@@ -28,11 +29,13 @@ if (! class_exists('Product_Status')) :
             }
         }
 
+        // Add new column to columns array
         function status_column( $columns_array ) {
             return $columns_array
             + array( 'status' => 'Status' );
         }
 
+        // Content of new Status column
         function populate_status( $column_name ) {
             if( $column_name  == 'status' ) {
                 $product_id = get_the_ID();

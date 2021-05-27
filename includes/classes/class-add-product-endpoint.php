@@ -11,6 +11,7 @@ if (! class_exists('Add_Product_Endpoint')) :
             add_action( 'woocommerce_account_add-products_endpoint', array($this, 'my_account_endpoint_content') );
         }
 
+        // Add "Add products" to menu links
         function log_history_link( $menu_links ){
             $whitelist_roles = array('administrator');
             $user = wp_get_current_user();
@@ -26,6 +27,7 @@ if (! class_exists('Add_Product_Endpoint')) :
             return $menu_links;
         }
 
+        // Add the endpoint "Add products"
         function add_endpoint() {
             flush_rewrite_rules();
             $whitelist_roles = array('administrator');
@@ -37,6 +39,7 @@ if (! class_exists('Add_Product_Endpoint')) :
             }
         }
 
+        // Content of Add products
         function my_account_endpoint_content() {
             echo do_shortcode('[wcj_product_add_new]');
         }

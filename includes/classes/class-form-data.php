@@ -14,6 +14,7 @@ if ( ! class_exists( 'Skrottilbud_Form_Data' ) ) :
             add_action( 'save_post_product', array( $this, 'update_product_form_data_meta_box' ) );
         }
 
+        // Add a meta box in product page
         function add_product_form_data_meta_box() {
             add_meta_box(
                 'product-form-data',
@@ -24,6 +25,7 @@ if ( ! class_exists( 'Skrottilbud_Form_Data' ) ) :
                 'low');
         }
 
+        // Content of meta box
         function add_product_form_data_meta_box_callback() {
             $product_id = get_the_ID();
             $current_address = get_post_meta($product_id, '_post_address', true);
@@ -32,6 +34,7 @@ if ( ! class_exists( 'Skrottilbud_Form_Data' ) ) :
             echo '<h3>' . esc_html__('Max distance', 'skrottilbud-plugin') . ':</h3>' . $max_distance;
         }
 
+        // On update product, save typed/current post address
         function update_product_form_data_meta_box() {
             $product_id = get_the_ID();
             if (isset($_POST['post_address'])) { 

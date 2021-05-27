@@ -15,6 +15,7 @@ if ( ! class_exists( 'Skrottilbud_Distance' ) ) :
             add_action('woocommerce_before_shop_loop_item_title', array( $this, 'show_cities' ), 1 );
         }
 
+        // Calcualte distance from seller and customer. Add distance to price offer if submitted offer
         function product_distance() {
             $current_user = wp_get_current_user();
             $user_role = (array) $current_user->roles;
@@ -28,9 +29,11 @@ if ( ! class_exists( 'Skrottilbud_Distance' ) ) :
                 $formatted_destination = get_post_meta($product_id, '_' . 'post_address', true) . " " . "Danmark";
                 $destination = str_replace(' ', '+', $formatted_destination);
             
+                // Calculate distance using Distance matrix API
                 $api = file_get_contents("https://maps.googleapis.com/maps/api/distancematrix/json?mode=driving&units=metric&origins=".$origin."&destinations=".$destination."&key=".API_KEY."");
                 $data = json_decode($api);
             
+                // Check for error
                 if ($data->status == 'INVALID_REQUEST') {
                     echo 'Something went wrong';
                 } elseif ($data->rows[0]->elements[0]->status == 'NOT_FOUND') {
@@ -41,6 +44,7 @@ if ( ! class_exists( 'Skrottilbud_Distance' ) ) :
                     $distance = $data->rows[0]->elements[0]->distance->text;
                     $updated_price_offers = array();
                     echo 'Distance: ' . $distance;
+                    // If submitted offer, append distance
                     if ( isset( $_POST['wcj-offer-price-submit'] ) ) {
                         foreach ($price_offers as $price_offer) {
                             if ($price_offer['product_title'] == $product_title) {
@@ -56,6 +60,7 @@ if ( ! class_exists( 'Skrottilbud_Distance' ) ) :
             }
         }
 
+        // Show city above each product
         function show_cities() {
             $product_id = get_the_ID();
             echo get_post_meta($product_id, '_' . 'post_address', true) . " " . "Danmark";

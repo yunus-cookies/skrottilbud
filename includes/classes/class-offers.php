@@ -14,6 +14,7 @@ if (! class_exists('Offers')) :
             add_action( 'woocommerce_account_offered-prices_endpoint', array($this, 'my_account_endpoint_content') );
         }
 
+        // Add offered prices to menu links
         function log_history_link( $menu_links ){
             $whitelist_roles = array('administrator');
             $user = wp_get_current_user();
@@ -29,19 +30,19 @@ if (! class_exists('Offers')) :
             return $menu_links;
         }
 
+        // Add offered prices endpoint
         function add_endpoint() {
             flush_rewrite_rules();
             $whitelist_roles = array('administrator');
             $user = wp_get_current_user();
             $user_role = (array) $user->roles;
-            
-            // WP_Rewrite is my Achilles' heel, so please do not ask me for detailed explanation
-        
+                    
             if (in_array($user_role[0], $whitelist_roles)) {
                 add_rewrite_endpoint( 'offered-prices', EP_ROOT | EP_PAGES );
             }
         }
 
+        // Offered prices content
         function my_account_endpoint_content() {
             global $wpdb;
             $data = $wpdb->get_results("SELECT post_id FROM wp_postmeta WHERE meta_key='_wcj_price_offers'");
@@ -55,11 +56,13 @@ if (! class_exists('Offers')) :
                     $product_name = $product_meta->get_title();
                     $price_offers = get_post_meta($product->post_id, '_' . 'wcj_price_offers', true);
         
+                    // Filter out all products where current user is not part of the price offers
                     if (!empty($price_offers)) {
                         $price_offers_filtered = array_filter($price_offers, function($price_offer) use ($current_user) {
                             return ($price_offer['customer_email'] == $current_user->user_email);
                         });
                     
+                    // If product is part of the products attached to current users price offers, then show product
                     if (in_array($product_name, array_column($price_offers_filtered, 'product_title'))) {
                         $image_url = wp_get_attachment_image_src(get_post_thumbnail_id( $product->post_id ), 'single-post-thumbnail')[0];
                         ?>
